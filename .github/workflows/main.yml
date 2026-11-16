@@ -1,10 +1,9 @@
 name: 'vector'
 
-
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-ubuntu:
