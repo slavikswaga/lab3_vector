@@ -347,6 +347,7 @@ class VectorConstIterator
         return ptr_ > other.ptr_;
     }
 
+    
     difference_type operator-(const VectorConstIterator& other) const{
         return ptr_ - other.ptr_;
     }
