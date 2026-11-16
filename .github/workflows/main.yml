@@ -23,7 +23,7 @@ jobs:
       - name: Run Tests
         run: ./build/vector_tests
         
-      - name: Run ip_filter
+      - name: Run main
         run: ./build/main
         
       - name: Build .deb package
