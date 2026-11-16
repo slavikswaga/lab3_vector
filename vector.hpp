@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <concepts>
 #include <type_traits>
+#include <memory>
 
 template <typename T> class VectorConstIterator;
 template <typename T> class VectorIterator;
@@ -21,30 +22,26 @@ template<Numeric T>
 class Vector
 {
 private:
-    T* data_ptr = nullptr;
+    std::unique_ptr<T[]> data_;
     size_t sz = 0;
     size_t cap = 0;
 public:
 
     explicit Vector(){}
-    explicit Vector(size_t N) :
-        data_ptr(new T[N]),
-        cap(N) {}
+    explicit Vector(size_t N) : cap(N) {
+        data_ = std::make_unique<T[]>(N);
+    }
 
     Vector(Vector&& other) noexcept :
-        sz(other.sz),
+        data_(std::move(other.data_)),
         cap(other.cap),
-        data_ptr(other.data_ptr) 
+        sz(other.sz) 
     {
-        other.data_ptr = nullptr;
         other.sz = 0;
         other.cap = 0;
     }
     
-    ~Vector()
-    {
-        delete[] data_ptr;
-    };
+    ~Vector() {};
   
     Vector& operator=(Vector&& other) noexcept(std::is_nothrow_move_assignable_v<T>)
     {
@@ -65,7 +62,7 @@ public:
         temp.sz = this->sz; 
 
         for(size_t i = 0; i < this->sz; ++i){
-            temp.data_ptr[i] = this->data_ptr[i];
+            temp.data_[i] = std::move(this->data_[i]);
         }
         temp.swap(*this);
     }
@@ -80,18 +77,10 @@ public:
         return sz == 0;
     };
 
-    void swap(Vector& other){
-        T* temp_data_ptr = other.data_ptr;
-        other.data_ptr = this->data_ptr;
-        this->data_ptr = temp_data_ptr;
-
-        size_t temp_sz = other.sz;
-        other.sz = this->sz;
-        this->sz = temp_sz;
-
-        size_t temp_cap = other.cap;
-        other.cap = this->cap;
-        this->cap = temp_cap;
+    void swap(Vector& other) noexcept {
+    std::swap(data_, other.data_);
+    std::swap(sz, other.sz);
+    std::swap(cap, other.cap);
     }
 
     
@@ -100,7 +89,7 @@ public:
         if(cap <= sz){
             (cap == 0) ? reserve(4) : reserve(cap * 2);
         }
-        *(data_ptr +sz) = value;
+        data_[sz] = value;
         ++sz;
     };
 
@@ -109,7 +98,7 @@ public:
         if(empty()){
             return;
         }
-        data_ptr[--sz].~T();
+        data_[--sz].~T();
     }
 
     void insert(size_t index, const T& value)
@@ -129,9 +118,9 @@ public:
 
         T value_copy = value;
         for(size_t i = sz; i > index; --i){
-            data_ptr[i] = std::move(data_ptr[i - 1]);
+            data_[i] = std::move(data_[i - 1]);
         }
-        data_ptr[index] = std::move(value_copy);
+        data_[index] = std::move(value_copy);
         ++sz;
     }
 
@@ -141,29 +130,29 @@ public:
             throw std::out_of_range("The index is outside the allowable range");
         for(size_t i = index; i < (sz - 1); ++i)
         {
-            *(data_ptr + i) = *(data_ptr + i + 1);
+            data_[i] = data_[i + 1];
         }
         --sz;
     };
     
     T& operator[](size_t index)
     {
-        return data_ptr[index];
+        return data_[index];
     }
     const T& operator[](size_t index) const
     {
-        return data_ptr[index];
+        return data_[index];
     }
 
     T& at(size_t index)
     {
-        if(index < sz) return data_ptr[index];
+        if(index < sz) return data_[index];
         throw std::out_of_range("The index is outside the allowable range");
     }
 
     const T& at(size_t index) const
     {
-        if(index < sz) return data_ptr[index];
+        if(index < sz) return data_[index];
         throw std::out_of_range("The index is outside the allowable range");
     }
 
@@ -171,16 +160,16 @@ public:
     using const_iterator = VectorConstIterator<T>;
 
     iterator begin() {
-        return iterator(data_ptr);
+        return iterator(data_.get());
     }
     iterator end() {
-        return iterator(data_ptr + sz);
+        return iterator(data_.get() + sz);
     }
     const_iterator cbegin() const {
-        return const_iterator(data_ptr);
+        return const_iterator(data_.get());
     }
     const_iterator cend() const {
-        return const_iterator(data_ptr + sz);
+        return const_iterator(data_.get() + sz);
     }
 };
 
