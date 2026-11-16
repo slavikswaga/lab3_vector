@@ -93,12 +93,14 @@ public:
         ++sz;
     };
 
-    void pop_back()
+    T pop_back() //возвращает
     {
         if(empty()){
-            return;
+            throw std::out_of_range("Pop_back Error :Vector is empty");
         }
-        data_[--sz].~T();
+        T temp = data_[--sz];
+        
+        return temp;
     }
 
     void insert(size_t index, const T& value)

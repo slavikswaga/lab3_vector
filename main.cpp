@@ -60,7 +60,7 @@ int main(int, char**){
     std::cout << std::endl;
 
     std::cout << "Содержимое вектора (удаление элемента с помощью pop_back())\n";
-    vec.pop_back();
+    std::cout << vec.pop_back() << std::endl;
     for(auto it = vec.begin(); it != vec.end(); ++it){
         std::cout << *it << " ";
     }
