@@ -1,10 +1,9 @@
 name: 'vector'
 
-
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-ubuntu:
@@ -24,8 +23,8 @@ jobs:
       - name: Run Tests
         run: ./build/vector_tests
         
-      - name: Run ip_filter
-        run: ./build/main
+      - name: Run main
+        run: ./build/lab3_vector
         
       - name: Build .deb package
         run: |
