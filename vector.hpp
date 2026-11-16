@@ -203,55 +203,55 @@ class VectorIterator
     explicit VectorIterator(T* ptr) :
         ptr_(ptr) {}
 
-    VectorIterator& operator++() const{
+    VectorIterator& operator++(){
         ++ptr_;
         return *this;
     }
 
-    VectorIterator& operator+=(difference_type n) const{
+    VectorIterator& operator+=(difference_type n){
         ptr_ += n;
         return *this;
     }
 
-    VectorIterator& operator-=(difference_type n) const{
+    VectorIterator& operator-=(difference_type n){
         ptr_ -= n;
         return *this;
     }
 
-    VectorIterator operator++(int) const{
+    VectorIterator operator++(int){
         VectorIterator iterator = *this;
         ptr_++;
         return iterator;
     }
 
-    VectorIterator& operator--() const{
+    VectorIterator& operator--(){
         ptr_--;
         return *this;
     }
 
-    VectorIterator operator--(int) const{
+    VectorIterator operator--(int){
         VectorIterator iterator = *this;
         ptr_--;
         return iterator;
     }
 
-    VectorIterator operator+(difference_type n) const {
+    VectorIterator operator+(difference_type n) const{
         return VectorIterator(ptr_ + n);
     }
 
-    VectorIterator operator-(difference_type n) const {
+    VectorIterator operator-(difference_type n) const{
         return VectorIterator(ptr_ - n);
     }
 
-    reference operator*(){
+    reference operator*() const{
         return *ptr_;
     }
 
-    pointer operator->(){
+    pointer operator->() const{
         return ptr_;
     }
 
-    reference operator[](size_t index){
+    reference operator[](size_t index) const{
         return *(ptr_ + index);
     }
 
@@ -269,6 +269,14 @@ class VectorIterator
 
     bool operator>(const VectorIterator& other) const{
         return ptr_ > other.ptr_;
+    }
+
+    bool operator<=(const VectorIterator& other) const{
+        return ptr_ <= other.ptr_;
+    }
+
+    bool operator>=(const VectorIterator& other) const{
+        return ptr_ >= other.ptr_;
     }
 
     difference_type operator-(const VectorIterator& other) const{
@@ -294,43 +302,43 @@ class VectorConstIterator
     explicit VectorConstIterator(const T* ptr) :
         ptr_(ptr) {}
 
-    VectorConstIterator& operator++() const{
+    VectorConstIterator& operator++(){
         ptr_++;
         return *this;
     }
 
-    VectorConstIterator operator++(int) const{
+    VectorConstIterator operator++(int){
         VectorConstIterator iterator = *this;
         ptr_++;
         return iterator;
     }
 
-    VectorConstIterator& operator--() const{
+    VectorConstIterator& operator--(){
         ptr_--;
         return *this;
     }
 
-    VectorConstIterator operator--(int) const{
+    VectorConstIterator operator--(int){
         VectorConstIterator iterator = *this;
         ptr_--;
         return iterator;
     }
 
-    VectorConstIterator& operator+=(difference_type n) const{
+    VectorConstIterator& operator+=(difference_type n){
         ptr_ += n;
         return *this;
     }
 
-    VectorConstIterator& operator-=(difference_type n) const{
+    VectorConstIterator& operator-=(difference_type n){
         ptr_ -= n;
         return *this;
     }
 
-    VectorConstIterator operator+(difference_type n) const {
+    VectorConstIterator operator+(difference_type n){
         return VectorConstIterator(ptr_ + n);
     }
 
-    VectorConstIterator operator-(difference_type n) const {
+    VectorConstIterator operator-(difference_type n){
         return VectorConstIterator(ptr_ - n);
     }
 
@@ -360,6 +368,14 @@ class VectorConstIterator
 
     bool operator>(const VectorConstIterator& other) const{
         return ptr_ > other.ptr_;
+    }
+
+    bool operator<=(const VectorConstIterator& other) const{
+        return ptr_ <= other.ptr_;
+    }
+
+    bool operator>=(const VectorConstIterator& other) const{
+        return ptr_ >= other.ptr_;
     }
 
 
