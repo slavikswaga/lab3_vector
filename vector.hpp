@@ -203,23 +203,33 @@ class VectorIterator
     explicit VectorIterator(T* ptr) :
         ptr_(ptr) {}
 
-    VectorIterator& operator++(){
-        ptr_++;
+    VectorIterator& operator++() const{
+        ++ptr_;
         return *this;
     }
 
-    VectorIterator operator++(int){
+    VectorIterator& operator+=(difference_type n) const{
+        ptr_ += n;
+        return *this;
+    }
+
+    VectorIterator& operator-=(difference_type n) const{
+        ptr_ -= n;
+        return *this;
+    }
+
+    VectorIterator operator++(int) const{
         VectorIterator iterator = *this;
         ptr_++;
         return iterator;
     }
 
-    VectorIterator& operator--(){
+    VectorIterator& operator--() const{
         ptr_--;
         return *this;
     }
 
-    VectorIterator operator--(int){
+    VectorIterator operator--(int) const{
         VectorIterator iterator = *this;
         ptr_--;
         return iterator;
@@ -284,30 +294,35 @@ class VectorConstIterator
     explicit VectorConstIterator(const T* ptr) :
         ptr_(ptr) {}
 
-    VectorConstIterator& operator++(){
+    VectorConstIterator& operator++() const{
         ptr_++;
         return *this;
     }
 
-    VectorConstIterator operator++(int){
+    VectorConstIterator operator++(int) const{
         VectorConstIterator iterator = *this;
         ptr_++;
         return iterator;
     }
 
-    VectorConstIterator& operator--(){
+    VectorConstIterator& operator--() const{
         ptr_--;
         return *this;
     }
 
-    VectorConstIterator operator--(int){
+    VectorConstIterator operator--(int) const{
         VectorConstIterator iterator = *this;
         ptr_--;
         return iterator;
     }
 
-    VectorConstIterator& operator+=(difference_type n){
+    VectorConstIterator& operator+=(difference_type n) const{
         ptr_ += n;
+        return *this;
+    }
+
+    VectorConstIterator& operator-=(difference_type n) const{
+        ptr_ -= n;
         return *this;
     }
 
@@ -347,7 +362,7 @@ class VectorConstIterator
         return ptr_ > other.ptr_;
     }
 
-    
+
     difference_type operator-(const VectorConstIterator& other) const{
         return ptr_ - other.ptr_;
     }
