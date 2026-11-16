@@ -56,4 +56,4 @@ jobs:
         run: cmake --build build
 
       - name: Run
-        run: ./build/main
+        run: ./build/lab3_vector
