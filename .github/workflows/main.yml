@@ -24,7 +24,7 @@ jobs:
         run: ./build/vector_tests
         
       - name: Run main
-        run: ./build/main
+        run: ./build/lab3_vector
         
       - name: Build .deb package
         run: |
